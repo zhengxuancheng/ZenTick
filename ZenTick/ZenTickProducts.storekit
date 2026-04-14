@@ -1,0 +1,29 @@
+{
+  "identifier" : "E9A1B2C3-D4E5-F6A7-B8C9-D0E1F2A3B4C5",
+  "type" : "com.apple.product-type.storekit",
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  },
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "1001",
+      "localizations" : [
+        {
+          "description" : "Unlock full history, stats trends, custom bells, Widget, and Apple Health sync.",
+          "displayName" : "ZenTick Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "zentick_pro",
+      "referenceName" : "ZenTick Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "0",
+    "_developerTeamID" : "J82UBD69Y6"
+  }
+}
