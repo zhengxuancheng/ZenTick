@@ -6,14 +6,54 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B1C0154DDE2E70BC5438C772 /* ZenTickWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E089C2EE25AD5277F02EF76E /* ZenTickWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F8CB4560328BA9F161909017 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFDBE77AF2A5513AD7CBF6EC /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ACD086C77BBF6FE987E98165 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0CFA34F52F8DF5F90043FFBD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C2838A68D811661FEA93760F;
+			remoteInfo = ZenTickWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9F09EA1FB2E7E22BF1528415 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B1C0154DDE2E70BC5438C772 /* ZenTickWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0CFA34FD2F8DF5F90043FFBD /* ZenTick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZenTick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFDBE77AF2A5513AD7CBF6EC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E089C2EE25AD5277F02EF76E /* ZenTickWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ZenTickWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0CFA34FF2F8DF5F90043FFBD /* ZenTick */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = ZenTick;
+			sourceTree = "<group>";
+		};
+		B85324054B17CD69DF0CAB3D /* ZenTickWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = ZenTickWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +66,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D400637613E86DF4B994C9BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8CB4560328BA9F161909017 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -34,6 +82,8 @@
 			children = (
 				0CFA34FF2F8DF5F90043FFBD /* ZenTick */,
 				0CFA34FE2F8DF5F90043FFBD /* Products */,
+				C8C9C1DC8E1204D01D59DAC1 /* Frameworks */,
+				B85324054B17CD69DF0CAB3D /* ZenTickWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -41,8 +91,25 @@
 			isa = PBXGroup;
 			children = (
 				0CFA34FD2F8DF5F90043FFBD /* ZenTick.app */,
+				E089C2EE25AD5277F02EF76E /* ZenTickWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		473174E0A4D1FEC8697D07F0 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CFDBE77AF2A5513AD7CBF6EC /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		C8C9C1DC8E1204D01D59DAC1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				473174E0A4D1FEC8697D07F0 /* iOS */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,20 +122,40 @@
 				0CFA34F92F8DF5F90043FFBD /* Sources */,
 				0CFA34FA2F8DF5F90043FFBD /* Frameworks */,
 				0CFA34FB2F8DF5F90043FFBD /* Resources */,
+				9F09EA1FB2E7E22BF1528415 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7BD81E10EEE64EB6EF76308A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0CFA34FF2F8DF5F90043FFBD /* ZenTick */,
+			);
+			name = ZenTick;
+			productName = ZenTick;
+			productReference = 0CFA34FD2F8DF5F90043FFBD /* ZenTick.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C2838A68D811661FEA93760F /* ZenTickWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0D54A6AD80D2BBD3A44D701 /* Build configuration list for PBXNativeTarget "ZenTickWidgetExtension" */;
+			buildPhases = (
+				A7E73A6CFE5D26CD37F1FF07 /* Sources */,
+				D400637613E86DF4B994C9BE /* Frameworks */,
+				BB5FBB5041EAD3D74E41577F /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				0CFA34FF2F8DF5F90043FFBD /* ZenTick */,
+				B85324054B17CD69DF0CAB3D /* ZenTickWidget */,
 			);
-			name = ZenTick;
-			packageProductDependencies = (
-			);
-			productName = ZenTick;
-			productReference = 0CFA34FD2F8DF5F90043FFBD /* ZenTick.app */;
-			productType = "com.apple.product-type.application";
+			name = ZenTickWidgetExtension;
+			productName = ZenTickWidgetExtension;
+			productReference = E089C2EE25AD5277F02EF76E /* ZenTickWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -100,12 +187,20 @@
 			projectRoot = "";
 			targets = (
 				0CFA34FC2F8DF5F90043FFBD /* ZenTick */,
+				C2838A68D811661FEA93760F /* ZenTickWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0CFA34FB2F8DF5F90043FFBD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB5FBB5041EAD3D74E41577F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +217,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7E73A6CFE5D26CD37F1FF07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7BD81E10EEE64EB6EF76308A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZenTickWidgetExtension;
+			target = C2838A68D811661FEA93760F /* ZenTickWidgetExtension */;
+			targetProxy = ACD086C77BBF6FE987E98165 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0CFA35082F8DF5FA0043FFBD /* Debug */ = {
@@ -246,15 +357,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ZenTick/ZenTick.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J82UBD69Y6;
-				CODE_SIGN_ENTITLEMENTS = ZenTick/ZenTick.entitlements;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SupportingFiles/Info.plist;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "ZenTick saves your meditation sessions as Mindful Minutes in Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -265,8 +378,6 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "ZenTick saves your meditation sessions as Mindful Minutes in Apple Health.";
-				INFOPLIST_FILE = SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -293,15 +404,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ZenTick/ZenTick.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J82UBD69Y6;
-				CODE_SIGN_ENTITLEMENTS = ZenTick/ZenTick.entitlements;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SupportingFiles/Info.plist;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "ZenTick saves your meditation sessions as Mindful Minutes in Apple Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -312,8 +425,6 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "ZenTick saves your meditation sessions as Mindful Minutes in Apple Health.";
-				INFOPLIST_FILE = SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -335,6 +446,78 @@
 			};
 			name = Release;
 		};
+		9EAB816BB7CBF250F1B9B0BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = J82UBD69Y6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "ZenTick Widget";
+				INFOPLIST_FILE = SupportingFiles/WidgetInfo.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinxingliu.ZenTick.ZenTickWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BEB10F8D183DA8214E013D4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = J82UBD69Y6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "ZenTick Widget";
+				INFOPLIST_FILE = SupportingFiles/WidgetInfo.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jinxingliu.ZenTick.ZenTickWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -352,6 +535,15 @@
 			buildConfigurations = (
 				0CFA350B2F8DF5FA0043FFBD /* Debug */,
 				0CFA350C2F8DF5FA0043FFBD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0D54A6AD80D2BBD3A44D701 /* Build configuration list for PBXNativeTarget "ZenTickWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEB10F8D183DA8214E013D4F /* Release */,
+				9EAB816BB7CBF250F1B9B0BA /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
