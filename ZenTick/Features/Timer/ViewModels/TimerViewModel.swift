@@ -8,9 +8,12 @@ final class TimerViewModel {
     var startBellStrikes: Int = 1
     var intervalMinutes: Int = 0
     var selectedBellSound: BellSound = .deepBowl
+    var selectedAmbientSound: AmbientSound = .none
+    var sessionNote: String = ""
 
     let timerService = TimerService()
     let audioService = AudioService()
+    let ambientService = AmbientAudioService()
     let notificationService = NotificationService()
     let healthKitService = HealthKitService()
 
@@ -28,17 +31,25 @@ final class TimerViewModel {
     let durationPresets: [TimeInterval] = [300, 600, 900, 1200, 1800, 2700, 3600]
 
     func presetLabel(for duration: TimeInterval) -> String {
-        "\(Int(duration / 60)) min"
+        String(localized: "duration_display \(Int(duration / 60))")
     }
 
     func startTimer() {
         audioService.configureAudioSession()
+        sessionNote = ""
+        timerService.start(duration: selectedDuration, prepareSeconds: 5)
 
+        // Start ambient sound immediately during preparation
+        if selectedAmbientSound != .none {
+            ambientService.play(selectedAmbientSound)
+        }
+    }
+
+    func onPrepareFinished() {
+        // Play start bell when preparation ends and actual meditation begins
         if startBellStrikes > 0 {
             audioService.playBell(selectedBellSound, strikes: startBellStrikes)
         }
-
-        timerService.start(duration: selectedDuration)
 
         Task {
             _ = await notificationService.requestAuthorization()
@@ -51,14 +62,25 @@ final class TimerViewModel {
         }
     }
 
+    func skipPrepare() {
+        timerService.isPreparing = false
+        timerService.prepareRemaining = 0
+        if timerService.startDate == nil {
+            timerService.startDate = Date()
+        }
+        onPrepareFinished()
+    }
+
     func pauseTimer() {
         timerService.pause()
+        ambientService.pause()
         notificationService.cancelTimerEndNotification()
         intervalTask?.cancel()
     }
 
     func resumeTimer() {
         timerService.resume()
+        ambientService.resume()
         let endDate = Date().addingTimeInterval(timerService.remainingSeconds)
         notificationService.scheduleTimerEndNotification(at: endDate)
 
@@ -69,33 +91,14 @@ final class TimerViewModel {
 
     func stopTimer() {
         timerService.stop()
+        ambientService.stop()
         notificationService.cancelTimerEndNotification()
         intervalTask?.cancel()
     }
 
-    func completeSession(modelContext: ModelContext, syncHealth: Bool) {
-        guard timerService.isCompleted, let startDate = timerService.startDate else { return }
-
-        audioService.playBell(selectedBellSound, strikes: 1)
-
-        let session = MeditationSession(
-            startDate: startDate,
-            duration: timerService.totalDuration,
-            completed: true
-        )
-        modelContext.insert(session)
-
-        if syncHealth {
-            let duration = timerService.totalDuration
-            Task {
-                _ = await healthKitService.saveMindfulSession(
-                    startDate: startDate,
-                    duration: duration
-                )
-            }
-        }
-
-        timerService.isCompleted = false
+    func saveNote(to session: MeditationSession?) {
+        guard let session, !sessionNote.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        session.note = sessionNote.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     func handleBackground() {

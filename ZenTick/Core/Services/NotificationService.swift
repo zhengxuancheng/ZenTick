@@ -12,8 +12,8 @@ final class NotificationService {
 
     func scheduleTimerEndNotification(at date: Date) {
         let content = UNMutableNotificationContent()
-        content.title = "Meditation Complete"
-        content.body = "Your session has ended. Well done."
+        content.title = String(localized: "notif_complete_title")
+        content.body = String(localized: "notif_complete_body")
         content.sound = .default
 
         let interval = max(1, date.timeIntervalSinceNow)
@@ -34,5 +34,38 @@ final class NotificationService {
     func cancelTimerEndNotification() {
         UNUserNotificationCenter.current()
             .removePendingNotificationRequests(withIdentifiers: ["timer_end"])
+    }
+
+    // MARK: - Daily Reminder
+
+    func scheduleDailyReminder(hour: Int, minute: Int) {
+        cancelDailyReminder()
+
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "notif_reminder_title")
+        content.body = String(localized: "notif_reminder_body")
+        content.sound = .default
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+
+        let trigger = UNCalendarNotificationTrigger(
+            dateMatching: dateComponents,
+            repeats: true
+        )
+
+        let request = UNNotificationRequest(
+            identifier: "daily_reminder",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    func cancelDailyReminder() {
+        UNUserNotificationCenter.current()
+            .removePendingNotificationRequests(withIdentifiers: ["daily_reminder"])
     }
 }

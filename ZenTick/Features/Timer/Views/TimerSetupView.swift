@@ -27,10 +27,13 @@ struct TimerSetupView: View {
 
 private extension TimerSetupView {
     var durationDisplay: some View {
-        Text("\(Int(viewModel.selectedDuration / 60)) min")
+        Text(String(localized: "duration_display \(Int(viewModel.selectedDuration / 60))"))
             .font(.system(size: 64, weight: .thin, design: .rounded))
             .monospacedDigit()
             .padding(.top, 20)
+            .contentTransition(.numericText())
+            .animation(.spring(duration: 0.3), value: viewModel.selectedDuration)
+            .accessibilityLabel(String(localized: "a11y_duration \(Int(viewModel.selectedDuration / 60))"))
     }
 
     var presetGrid: some View {
@@ -43,14 +46,16 @@ private extension TimerSetupView {
                     label: viewModel.presetLabel(for: preset),
                     isSelected: viewModel.selectedDuration == preset
                 ) {
+                    HapticService.selection()
                     viewModel.selectedDuration = preset
                 }
             }
 
             PresetButton(
-                label: "Custom",
+                label: String(localized: "custom"),
                 isSelected: !viewModel.durationPresets.contains(viewModel.selectedDuration)
             ) {
+                HapticService.selection()
                 showCustomPicker = true
             }
         }
@@ -59,11 +64,11 @@ private extension TimerSetupView {
     var bellSettings: some View {
         VStack(spacing: 16) {
             HStack {
-                Text("Start Bell")
+                Text(String(localized: "start_bell"))
                     .foregroundStyle(.secondary)
                 Spacer()
-                Picker("Strikes", selection: $viewModel.startBellStrikes) {
-                    Text("Off").tag(0)
+                Picker(String(localized: "strikes"), selection: $viewModel.startBellStrikes) {
+                    Text(String(localized: "bell_off")).tag(0)
                     Text("1x").tag(1)
                     Text("3x").tag(3)
                 }
@@ -72,16 +77,29 @@ private extension TimerSetupView {
             }
 
             HStack {
-                Text("Interval Bell")
+                Text(String(localized: "interval_bell"))
                     .foregroundStyle(.secondary)
                 Spacer()
-                Picker("Interval", selection: $viewModel.intervalMinutes) {
-                    Text("Off").tag(0)
-                    Text("5 min").tag(5)
-                    Text("10 min").tag(10)
-                    Text("15 min").tag(15)
+                Picker(String(localized: "interval"), selection: $viewModel.intervalMinutes) {
+                    Text(String(localized: "bell_off")).tag(0)
+                    Text(String(localized: "minutes_5")).tag(5)
+                    Text(String(localized: "minutes_10")).tag(10)
+                    Text(String(localized: "minutes_15")).tag(15)
                 }
                 .pickerStyle(.menu)
+            }
+
+            HStack {
+                Text(String(localized: "ambient_sound"))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Picker(String(localized: "ambient_sound"), selection: $viewModel.selectedAmbientSound) {
+                    ForEach(AmbientSound.allCases) { sound in
+                        Text(sound.displayName).tag(sound)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
             }
         }
         .padding()
@@ -90,9 +108,10 @@ private extension TimerSetupView {
 
     var startButton: some View {
         Button {
+            HapticService.medium()
             viewModel.startTimer()
         } label: {
-            Text("Begin")
+            Text(String(localized: "begin"))
                 .font(.title2.weight(.medium))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
@@ -100,6 +119,7 @@ private extension TimerSetupView {
                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 28))
         }
         .padding(.top, 8)
+        .accessibilityHint(String(localized: "a11y_begin_hint \(Int(viewModel.selectedDuration / 60))"))
     }
 }
 
@@ -121,6 +141,7 @@ private struct PresetButton: View {
                     isSelected ? Color.accentColor : Color(.systemGray5),
                     in: RoundedRectangle(cornerRadius: 10)
                 )
+                .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
     }
 }
@@ -133,17 +154,17 @@ private struct CustomDurationPicker: View {
 
     var body: some View {
         NavigationStack {
-            Picker("Minutes", selection: $minutes) {
+            Picker(String(localized: "minutes"), selection: $minutes) {
                 ForEach(1...120, id: \.self) { m in
-                    Text("\(m) min").tag(m)
+                    Text(String(localized: "duration_display \(m)")).tag(m)
                 }
             }
             .pickerStyle(.wheel)
-            .navigationTitle("Custom Duration")
+            .navigationTitle(String(localized: "custom_duration"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done", action: onConfirm)
+                    Button(String(localized: "done"), action: onConfirm)
                 }
             }
         }

@@ -10,17 +10,21 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             List {
-                overviewSection
-                streaksSection
-                if storeService.isPro {
-                    trendSection
+                if sessions.isEmpty {
+                    emptyStateSection
                 } else {
-                    Section("Monthly Trend") {
-                        ProUpsellRow(text: "Unlock stats trends with Pro")
+                    overviewSection
+                    streaksSection
+                    if storeService.isPro {
+                        trendSection
+                    } else {
+                        Section(String(localized: "monthly_trend")) {
+                            ProUpsellRow(text: String(localized: "unlock_trends"))
+                        }
                     }
                 }
             }
-            .navigationTitle("Statistics")
+            .navigationTitle(String(localized: "stats_title"))
         }
     }
 }
@@ -28,11 +32,43 @@ struct StatsView: View {
 // MARK: - Sections
 
 private extension StatsView {
+    var emptyStateSection: some View {
+        Section {
+            VStack(spacing: 16) {
+                Image(systemName: "chart.bar.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.tertiary)
+                    .padding(.top, 20)
+
+                Text(String(localized: "stats_empty_title"))
+                    .font(.title3.weight(.medium))
+
+                Text(String(localized: "stats_empty_subtitle"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 20)
+            }
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+        }
+    }
+
     var overviewSection: some View {
-        Section("Overview") {
+        Section(String(localized: "overview")) {
             HStack {
-                StatCard(value: "\(sessions.count)", label: "Sessions")
-                StatCard(value: formatTotalDuration(), label: "Total Time")
+                StatCard(
+                    value: "\(sessions.count)",
+                    label: String(localized: "sessions"),
+                    icon: "circle.fill",
+                    iconColor: .accentColor
+                )
+                StatCard(
+                    value: formatTotalDuration(),
+                    label: String(localized: "total_time"),
+                    icon: "hourglass",
+                    iconColor: .purple
+                )
             }
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
@@ -40,10 +76,20 @@ private extension StatsView {
     }
 
     var streaksSection: some View {
-        Section("Streaks") {
+        Section(String(localized: "streaks")) {
             HStack {
-                StatCard(value: "\(currentStreak)", label: "Current")
-                StatCard(value: "\(longestStreak)", label: "Longest")
+                StatCard(
+                    value: "\(currentStreak)",
+                    label: String(localized: "current"),
+                    icon: "flame.fill",
+                    iconColor: .orange
+                )
+                StatCard(
+                    value: "\(longestStreak)",
+                    label: String(localized: "longest"),
+                    icon: "trophy.fill",
+                    iconColor: .yellow
+                )
             }
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
@@ -51,21 +97,24 @@ private extension StatsView {
     }
 
     var trendSection: some View {
-        Section("Monthly Trend") {
+        Section(String(localized: "monthly_trend")) {
             if monthlyData.isEmpty {
-                Text("Not enough data yet.")
+                Text(String(localized: "not_enough_data"))
                     .foregroundStyle(.secondary)
             } else {
                 Chart(monthlyData) { item in
                     BarMark(
-                        x: .value("Month", item.label),
-                        y: .value("Minutes", item.totalMinutes)
+                        x: .value(String(localized: "month"), item.label),
+                        y: .value(String(localized: "chart_minutes"), item.totalMinutes)
                     )
                     .foregroundStyle(Color.accentColor.gradient)
                     .cornerRadius(4)
                 }
+                .chartYAxisLabel(String(localized: "chart_minutes"))
                 .frame(height: 200)
                 .padding(.vertical, 8)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(String(localized: "a11y_trend_chart"))
             }
         }
     }
@@ -79,43 +128,11 @@ private extension StatsView {
     }
 
     var currentStreak: Int {
-        let days = sessionDays
-        guard !days.isEmpty else { return 0 }
-
-        var streak = 0
-        var current = Date().startOfDay
-
-        if !days.contains(current) {
-            current = current.adding(days: -1)
-            guard days.contains(current) else { return 0 }
-        }
-
-        while days.contains(current) {
-            streak += 1
-            current = current.adding(days: -1)
-        }
-        return streak
+        StreakCalculator.currentStreak(from: sessionDays)
     }
 
     var longestStreak: Int {
-        let sortedDays = sessionDays.sorted()
-        guard sortedDays.count > 1 else { return sortedDays.count }
-
-        var longest = 1
-        var current = 1
-
-        for i in 1..<sortedDays.count {
-            let diff = Calendar.current.dateComponents(
-                [.day], from: sortedDays[i - 1], to: sortedDays[i]
-            ).day ?? 0
-            if diff == 1 {
-                current += 1
-                longest = max(longest, current)
-            } else if diff > 1 {
-                current = 1
-            }
-        }
-        return longest
+        StreakCalculator.longestStreak(from: sessionDays)
     }
 
     struct MonthlyDataPoint: Identifiable {

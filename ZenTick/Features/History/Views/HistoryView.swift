@@ -21,17 +21,21 @@ struct HistoryView: View {
     }
 
     private var currentStreak: Int {
-        calculateStreak(from: sessionDays)
+        StreakCalculator.currentStreak(from: sessionDays)
     }
 
     var body: some View {
         NavigationStack {
             List {
-                streakSection
-                calendarSection
-                sessionsSection
+                if allSessions.isEmpty {
+                    emptyStateSection
+                } else {
+                    streakSection
+                    calendarSection
+                    sessionsSection
+                }
             }
-            .navigationTitle("History")
+            .navigationTitle(String(localized: "history_title"))
         }
     }
 }
@@ -39,13 +43,42 @@ struct HistoryView: View {
 // MARK: - Sections
 
 private extension HistoryView {
+    var emptyStateSection: some View {
+        Section {
+            VStack(spacing: 16) {
+                Image(systemName: "leaf.fill")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.tertiary)
+                    .padding(.top, 20)
+
+                Text(String(localized: "history_empty_title"))
+                    .font(.title3.weight(.medium))
+
+                Text(String(localized: "history_empty_subtitle"))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 20)
+            }
+            .frame(maxWidth: .infinity)
+            .listRowBackground(Color.clear)
+        }
+    }
+
     var streakSection: some View {
         Section {
             HStack {
-                StatCard(value: "\(currentStreak)", label: "Day Streak")
+                StatCard(
+                    value: "\(currentStreak)",
+                    label: String(localized: "streak_label"),
+                    icon: "flame.fill",
+                    iconColor: .orange
+                )
                 StatCard(
                     value: formatDuration(sessions.reduce(0) { $0 + $1.duration }),
-                    label: "This Week"
+                    label: String(localized: "this_week"),
+                    icon: "clock.fill",
+                    iconColor: .accentColor
                 )
             }
             .listRowInsets(EdgeInsets())
@@ -54,7 +87,7 @@ private extension HistoryView {
     }
 
     var calendarSection: some View {
-        Section("Calendar") {
+        Section(String(localized: "calendar")) {
             CalendarGridView(
                 displayedMonth: $displayedMonth,
                 sessionDays: sessionDays
@@ -63,18 +96,13 @@ private extension HistoryView {
     }
 
     var sessionsSection: some View {
-        Section("Recent Sessions") {
-            if sessions.isEmpty {
-                Text("No sessions yet. Start meditating!")
-                    .foregroundStyle(.secondary)
-            } else {
-                ForEach(sessions) { session in
-                    SessionRow(session: session)
-                }
+        Section(String(localized: "recent_sessions")) {
+            ForEach(sessions) { session in
+                SessionRow(session: session)
             }
 
             if !storeService.isPro && allSessions.count > sessions.count {
-                ProUpsellRow(text: "Unlock full history")
+                ProUpsellRow(text: String(localized: "unlock_history"))
             }
         }
     }
@@ -87,24 +115,6 @@ private extension HistoryView {
         }
         return "\(minutes)m"
     }
-
-    func calculateStreak(from days: Set<Date>) -> Int {
-        guard !days.isEmpty else { return 0 }
-
-        var streak = 0
-        var current = Date().startOfDay
-
-        if !days.contains(current) {
-            current = current.adding(days: -1)
-            guard days.contains(current) else { return 0 }
-        }
-
-        while days.contains(current) {
-            streak += 1
-            current = current.adding(days: -1)
-        }
-        return streak
-    }
 }
 
 // MARK: - Stat Card
@@ -112,9 +122,16 @@ private extension HistoryView {
 struct StatCard: View {
     let value: String
     let label: String
+    var icon: String? = nil
+    var iconColor: Color = .accentColor
 
     var body: some View {
         VStack(spacing: 4) {
+            if let icon {
+                Image(systemName: icon)
+                    .font(.caption)
+                    .foregroundStyle(iconColor)
+            }
             Text(value)
                 .font(.title.weight(.semibold))
                 .monospacedDigit()
@@ -124,6 +141,8 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }
 
@@ -133,19 +152,30 @@ private struct SessionRow: View {
     let session: MeditationSession
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(session.startDate, style: .date)
-                    .font(.subheadline.weight(.medium))
-                Text(session.startDate, style: .time)
-                    .font(.caption)
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(session.startDate, style: .date)
+                        .font(.subheadline.weight(.medium))
+                    Text(session.startDate, style: .time)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Text(String(localized: "duration_display \(Int(session.duration / 60))"))
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
-            Spacer()
-            Text("\(Int(session.duration / 60)) min")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+
+            if let note = session.note, !note.isEmpty {
+                Text(note)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(String(localized: "a11y_session \(session.startDate.formatted(date: .abbreviated, time: .shortened)) \(Int(session.duration / 60))"))
     }
 }
 
@@ -162,6 +192,7 @@ struct ProUpsellRow: View {
                 .foregroundStyle(.secondary)
         }
         .font(.subheadline)
+        .accessibilityLabel(text)
     }
 }
 
@@ -171,7 +202,6 @@ struct CalendarGridView: View {
     @Binding var displayedMonth: Date
     let sessionDays: Set<Date>
 
-    private let weekdays = ["S", "M", "T", "W", "T", "F", "S"]
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
     var body: some View {
@@ -186,10 +216,14 @@ struct CalendarGridView: View {
     private var monthHeader: some View {
         HStack {
             Button {
-                displayedMonth = displayedMonth.adding(months: -1)
+                HapticService.selection()
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    displayedMonth = displayedMonth.adding(months: -1)
+                }
             } label: {
                 Image(systemName: "chevron.left")
             }
+            .accessibilityLabel(String(localized: "a11y_prev_month"))
 
             Spacer()
 
@@ -199,21 +233,27 @@ struct CalendarGridView: View {
             Spacer()
 
             Button {
-                displayedMonth = displayedMonth.adding(months: 1)
+                HapticService.selection()
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    displayedMonth = displayedMonth.adding(months: 1)
+                }
             } label: {
                 Image(systemName: "chevron.right")
             }
+            .accessibilityLabel(String(localized: "a11y_next_month"))
         }
     }
 
     private var weekdayHeader: some View {
-        LazyVGrid(columns: columns) {
-            ForEach(weekdays, id: \.self) { day in
+        let symbols = Calendar.current.veryShortWeekdaySymbols
+        return LazyVGrid(columns: columns) {
+            ForEach(symbols, id: \.self) { day in
                 Text(day)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
         }
+        .accessibilityHidden(true)
     }
 
     private var daysGrid: some View {
@@ -269,5 +309,7 @@ private struct DayCell: View {
                 .frame(width: 6, height: 6)
         }
         .frame(height: 32)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(day), \(hasSession ? String(localized: "a11y_has_session") : String(localized: "a11y_no_session"))")
     }
 }

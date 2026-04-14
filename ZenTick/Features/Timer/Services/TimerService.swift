@@ -7,7 +7,11 @@ final class TimerService {
     var isPaused: Bool = false
     var isCompleted: Bool = false
 
-    private(set) var startDate: Date?
+    // Preparation countdown
+    var isPreparing: Bool = false
+    var prepareRemaining: Int = 0
+
+    var startDate: Date?
     private(set) var totalDuration: TimeInterval = 0
     private var timer: Timer?
     private var backgroundDate: Date?
@@ -17,17 +21,25 @@ final class TimerService {
         return 1.0 - (remainingSeconds / totalDuration)
     }
 
-    func start(duration: TimeInterval) {
+    func start(duration: TimeInterval, prepareSeconds: Int = 5) {
         totalDuration = duration
         remainingSeconds = duration
-        startDate = Date()
         isRunning = true
         isPaused = false
         isCompleted = false
-        startTimer()
+
+        if prepareSeconds > 0 {
+            isPreparing = true
+            prepareRemaining = prepareSeconds
+            startPrepareCountdown()
+        } else {
+            startDate = Date()
+            startTimer()
+        }
     }
 
     func pause() {
+        guard !isPreparing else { return }
         isPaused = true
         timer?.invalidate()
         timer = nil
@@ -44,18 +56,20 @@ final class TimerService {
         isRunning = false
         isPaused = false
         isCompleted = false
+        isPreparing = false
+        prepareRemaining = 0
         remainingSeconds = 0
     }
 
     func appDidEnterBackground() {
-        guard isRunning, !isPaused else { return }
+        guard isRunning, !isPaused, !isPreparing else { return }
         backgroundDate = Date()
         timer?.invalidate()
         timer = nil
     }
 
     func appWillEnterForeground() {
-        guard isRunning, !isPaused, let bgDate = backgroundDate else { return }
+        guard isRunning, !isPaused, !isPreparing, let bgDate = backgroundDate else { return }
         let elapsed = Date().timeIntervalSince(bgDate)
         remainingSeconds = max(0, remainingSeconds - elapsed)
         backgroundDate = nil
@@ -66,6 +80,30 @@ final class TimerService {
             startTimer()
         }
     }
+
+    // MARK: - Preparation countdown
+
+    private func startPrepareCountdown() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            MainActor.assumeIsolated {
+                self.prepareTick()
+            }
+        }
+    }
+
+    private func prepareTick() {
+        prepareRemaining -= 1
+        if prepareRemaining <= 0 {
+            timer?.invalidate()
+            timer = nil
+            isPreparing = false
+            startDate = Date()
+            startTimer()
+        }
+    }
+
+    // MARK: - Main timer
 
     private func startTimer() {
         timer?.invalidate()

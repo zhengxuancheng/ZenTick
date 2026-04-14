@@ -109,6 +109,7 @@ struct SmallWidgetView: View {
             }
         }
         .containerBackground(.fill.tertiary, for: .widget)
+        .widgetURL(URL(string: "zentick://timer"))
     }
 }
 
@@ -116,7 +117,6 @@ struct SmallWidgetView: View {
 
 struct MediumWidgetView: View {
     let entry: MeditationEntry
-    private let dayLabels = ["M", "T", "W", "T", "F", "S", "S"]
 
     var body: some View {
         HStack(spacing: 16) {
@@ -169,6 +169,7 @@ struct MediumWidgetView: View {
             .frame(maxWidth: .infinity)
         }
         .containerBackground(.fill.tertiary, for: .widget)
+        .widgetURL(URL(string: "zentick://history"))
     }
 
     private func dayLabel(for index: Int) -> String {

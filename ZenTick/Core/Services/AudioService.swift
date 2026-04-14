@@ -10,6 +10,8 @@ enum BellSound: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
+    var displayName: String { rawValue }
+
     var frequencies: [Double] {
         switch self {
         case .deepBowl: [220, 440, 660]
