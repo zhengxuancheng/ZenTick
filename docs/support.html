@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTick - Support / 支持</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #fafafa;
+            padding: 0 20px;
+        }
+        .container {
+            max-width: 720px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        h1 { font-size: 28px; margin-bottom: 8px; color: #1a1a2e; }
+        .subtitle { color: #666; font-size: 14px; margin-bottom: 32px; }
+        h2 { font-size: 20px; margin-top: 28px; margin-bottom: 12px; color: #1a1a2e; }
+        p { margin-bottom: 12px; font-size: 15px; }
+        .faq-item { margin-bottom: 24px; }
+        .faq-q { font-weight: 600; margin-bottom: 6px; }
+        .faq-a { color: #555; }
+        a { color: #5E6CE7; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .lang-toggle { text-align: right; margin-bottom: 20px; }
+        .lang-toggle a { font-size: 14px; }
+        .section-zh { display: none; }
+        .contact-card {
+            background: #f5f5ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-toggle">
+            <a href="#" onclick="toggleLang(); return false;" id="langBtn">中文版</a>
+        </div>
+
+        <!-- English Version -->
+        <div id="en-content">
+            <h1>Support</h1>
+            <p class="subtitle">We're here to help you with your meditation practice.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <p class="faq-q">How do I set a custom meditation duration?</p>
+                <p class="faq-a">On the Timer tab, tap the duration field and use the stepper to set any duration from 1 to 120 minutes.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">What are interval bells?</p>
+                <p class="faq-a">Interval bells ring at regular intervals during your session (e.g., every 5 minutes) to gently bring your awareness back. Set the interval on the Timer setup screen.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">Can I use the app without sound?</p>
+                <p class="faq-a">Yes! Set the start bell strikes to 0 and choose "None" for ambient sound. The timer will run silently with on-screen progress.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">Does the timer work in the background?</p>
+                <p class="faq-a">Yes. When you switch to another app or lock your screen, ZenTick continues tracking time. You'll receive a notification when your session completes. Ambient sounds will continue playing in the background.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">What does Pro unlock?</p>
+                <p class="faq-a">ZenTick Pro unlocks full session history (free users see the last 7 days), additional bell sounds, and Apple Health integration.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">How do I restore my purchase?</p>
+                <p class="faq-a">Go to Settings &gt; Pro section &gt; Restore Purchases. Make sure you're signed in with the same Apple ID used for the original purchase.</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">Is my data backed up?</p>
+                <p class="faq-a">Your data is stored locally on your device and included in your standard device backups. You can also enable iCloud sync in Settings to keep your data in sync across devices.</p>
+            </div>
+
+            <h2>Contact Us</h2>
+            <div class="contact-card">
+                <p>If you need further assistance or want to report a bug, please email us at:</p>
+                <p><strong><a href="mailto:liujinxingde2008@hotmail.com">liujinxingde2008@hotmail.com</a></strong></p>
+                <p>We typically respond within 24 hours.</p>
+            </div>
+        </div>
+
+        <!-- Chinese Version -->
+        <div id="zh-content" class="section-zh">
+            <h1>支持</h1>
+            <p class="subtitle">我们在这里帮助您的冥想练习。</p>
+
+            <h2>常见问题</h2>
+
+            <div class="faq-item">
+                <p class="faq-q">如何设置自定义冥想时长？</p>
+                <p class="faq-a">在计时器页面，点击时长区域，使用步进器设置 1 到 120 分钟的任意时长。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">什么是间隔钟声？</p>
+                <p class="faq-a">间隔钟声会在冥想过程中定时响起（例如每 5 分钟），温柔地提醒您回归觉知。可以在计时器设置页面配置间隔时间。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">可以静音使用吗？</p>
+                <p class="faq-a">可以！将开始钟声次数设为 0，环境音选择"无"。计时器将静默运行，仅显示屏幕上的进度。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">计时器在后台能工作吗？</p>
+                <p class="faq-a">可以。当您切换到其他应用或锁屏时，ZenTick 会继续计时。冥想结束时您会收到通知。环境音会在后台继续播放。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">Pro 版有什么功能？</p>
+                <p class="faq-a">ZenTick Pro 解锁完整的冥想历史记录（免费版仅显示近 7 天）、额外钟声音效和 Apple 健康集成。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">如何恢复购买？</p>
+                <p class="faq-a">前往 设置 &gt; Pro 区域 &gt; 恢复购买。请确保使用与原始购买相同的 Apple ID 登录。</p>
+            </div>
+
+            <div class="faq-item">
+                <p class="faq-q">数据有备份吗？</p>
+                <p class="faq-a">您的数据存储在设备本地，会包含在常规设备备份中。您也可以在设置中开启 iCloud 同步，在多个设备间保持数据同步。</p>
+            </div>
+
+            <h2>联系我们</h2>
+            <div class="contact-card">
+                <p>如需进一步帮助或报告问题，请发送邮件至：</p>
+                <p><strong><a href="mailto:liujinxingde2008@hotmail.com">liujinxingde2008@hotmail.com</a></strong></p>
+                <p>我们通常会在 24 小时内回复。</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 ZenTick. All rights reserved. |
+            <a href="privacy.html">Privacy Policy</a>
+        </div>
+    </div>
+
+    <script>
+        let isZh = false;
+        function toggleLang() {
+            isZh = !isZh;
+            document.getElementById('en-content').style.display = isZh ? 'none' : 'block';
+            document.getElementById('zh-content').style.display = isZh ? 'block' : 'none';
+            document.getElementById('langBtn').textContent = isZh ? 'English' : '中文版';
+        }
+    </script>
+</body>
+</html>
